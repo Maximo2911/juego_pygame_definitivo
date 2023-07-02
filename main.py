@@ -14,7 +14,7 @@ corriendo_juego = True
 frame_actual = 0
 
 #Seteo jugador a esta posicion
-jugador = Player(500, 500, frame_rate_ms = 100)
+jugador = Player(800, 800, frame_rate_ms = 2000)             #En frame_rate_ms = 1000 se rompe pero imagen bien
 
 # Limito los FPS
 clock.tick(FPS)
@@ -30,11 +30,17 @@ while corriendo_juego:
     keys = pygame.key.get_pressed()
     jugador.update(100, keys)
 
+    
+
     # print(f"{jugador.animation} - {len(jugador.animation) - 1} < {jugador.frame}")
-    print(jugador.rect)
-    print(jugador.move_x)
-    print(jugador.flipped)
-    # print(jugador.rect.y)
+    print(f"{jugador.sliding}")
+    # print(jugador.sliding)
+
+    # print(jugador.rect)         |
+    # print(jugador.move_x)       |       Sirve para ver desplazamiento
+    # print(jugador.flipped)      |
+    
+    # print(f"{jugador.time_animations} >= {jugador.frame_rate_ms}")
 
 
     # jugador.do_animations(delta_ms)

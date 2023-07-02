@@ -36,27 +36,8 @@ def crear_lista_rutas_relativas(path_folder:str) -> list:
 # print(crear_lista_rutas_relativas("sprites/run/"))
 #===============================================================================
 def dar_vuelta_sprites(action:str)-> list:
-    '''
-    Funcion que se encarga de dar vuelta las secuencias de sprites
-    Recibe como funcion la lista de sprites que se quieren dar vuelta
-    Retorna la lista de sprites con cada imagen dada vuelta
-    '''
-    lista_flip = []
-    match action:
-        case "attack":
-            secuencia = crear_lista_rutas_relativas("sprits/recotardos_con_asu/attack/")
-        case "run":
-            secuencia = crear_lista_rutas_relativas("sprits/recotardos_con_asu/run/")
-        case "idle":
-            secuencia = crear_lista_rutas_relativas("sprits/recotardos_con_asu/idle/")
-    longitud = len(secuencia)
-    for i in range(longitud):
-        image = secuencia[i]
-        image_load = pygame.image.load(image)
-        image_flipped = pygame.transform.flip(image_load, True, False)
-        lista_flip.append(image_flipped)
 
-    return lista_flip
+    return
 # print(dar_vuelta_sprites("attack"))
 #===============================================================================
 
