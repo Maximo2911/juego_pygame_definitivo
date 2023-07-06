@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 from player import *
 from constantes import *
+from auxiliar import *
 
 
 # configuracion inicial de pygame
@@ -14,7 +15,7 @@ corriendo_juego = True
 frame_actual = 0
 
 #Seteo jugador a esta posicion
-jugador = Player(800, 800, frame_rate_ms = 2000)             #En frame_rate_ms = 1000 se rompe pero imagen bien
+jugador = Player(500, 600, frame_rate_ms = 1500)             #En frame_rate_ms = 1000 se rompe pero imagen bien
 
 # Limito los FPS
 clock.tick(FPS)
@@ -33,7 +34,7 @@ while corriendo_juego:
     
 
     # print(f"{jugador.animation} - {len(jugador.animation) - 1} < {jugador.frame}")
-    print(f"{jugador.sliding}")
+    print(f"{jugador.flipped}")
     # print(jugador.sliding)
 
     # print(jugador.rect)         |
@@ -49,3 +50,5 @@ while corriendo_juego:
     jugador.draw(pantalla_juego)
     # Mostramos los cambios hechos(Actualizar la pantalla)
     pygame.display.flip()
+
+

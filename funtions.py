@@ -35,9 +35,16 @@ def crear_lista_rutas_relativas(path_folder:str) -> list:
     return lista_con_rutas
 # print(crear_lista_rutas_relativas("sprites/run/"))
 #===============================================================================
-def dar_vuelta_sprites(action:str)-> list:
+def escalar_secuencia_imagenes(secuencia, escala):
+    secuencia_escalada = []
+    for ruta_imagen in secuencia:
+        imagen = pygame.image.load(ruta_imagen)
+        imagen_escalada = pygame.transform.scale(imagen, escala)
+        secuencia_escalada.append(imagen_escalada)
+    return secuencia_escalada
 
-    return
-# print(dar_vuelta_sprites("attack"))
+w=100
+h=200
+# print(escalar_secuencia_imagenes(crear_lista_rutas_relativas("sprites/spin/"), (w, h)))
 #===============================================================================
 
