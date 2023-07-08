@@ -81,7 +81,7 @@ while corriendo_juego:
     # print("----------")
     # print(jugador.flag_repeat)
     # print("__________")
-    print(jugador.is_jump)
+    
 
     # jugador.do_animations(delta_ms)
     # print(jugador.animation[jugador.frame])

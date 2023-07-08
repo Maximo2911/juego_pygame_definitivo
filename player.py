@@ -49,7 +49,7 @@ class Player:
         #animacion
         self.animation = self.idle
         self.frame = 0
-        self.playing_sequence = False
+        
         
         #rectangulo
         self.image = self.animation[self.frame]
@@ -105,7 +105,7 @@ class Player:
         # self.ground_collition_rect.x = x + self.rect.width - SIDE_COLLIDE_W
 
     def do_animations(self, delta_ms):
-        if self.playing_sequence:
+        
             self.time_animations += delta_ms
             if self.time_animations >= self.frame_rate_ms:
                 self.time_animations = 0
@@ -113,11 +113,11 @@ class Player:
                     self.frame += 1
                 else:
                     self.frame = 0
-                    self.playing_sequence = False
+                    
 
 
     def do_movement(self, delta_ms, plataform_list):
-        if self.playing_sequence:
+        
             # self.time_animations += delta_ms
             # if(self.time_animations >= self.frame_rate_ms):
             #     self.time_animations = 0
@@ -125,7 +125,7 @@ class Player:
             if(abs(self.y_start_jump - self.rect.y) > self.jump_height and self.is_jump):
                 self.move_y = 0
                 self.flag_repeat = False
-                self.playing_sequence = False
+                
 
           
             self.change_x(self.move_x)
@@ -141,7 +141,7 @@ class Player:
                     self.is_fall = False
                     self.is_jump = False
                     self.jumping = False
-            self.playing_sequence = False
+            
 
 
     def is_on_plataform(self,plataform_list):
@@ -158,7 +158,7 @@ class Player:
 
 
     def update(self,delta_ms, keys, plataform_list):
-        self.events(keys)
+        self.events(keys, plataform_list)
         self.do_animations(delta_ms)
         self.do_movement(delta_ms, plataform_list)
         
@@ -181,7 +181,7 @@ class Player:
         screen.blit(self.image,self.rect)
     #====================================================
     def idle_action(self):
-        if self.jumping == False and self.sliding == False and self.shooting == False and self.ducking == False and self.run_shooting == False and self.ladder_action == False and self.running == False:
+        if not self.is_jump:
             if self.animation != self.idle and self.animation != self.idle_left:
                 self.frame = 0
                 if self.flipped == True:
@@ -190,13 +190,13 @@ class Player:
                     self.animation = self.idle
             self.move_x = 0
             self.move_y = 0
-            self.playing_sequence = True
+            
             # print("IDLING")
 
     
     def run_sequence(self, direction):
-        if self.jumping == False and self.sliding == False and self.ducking == False and self.shooting == False and self.run_shooting == False and self.ladder_action == False:
-            self.running  = True
+        if not self.is_jump:
+        
             if self.animation != self.run and self.animation != self.run_left:
                 self.frame = 0
                 if direction == "RIGHT":
@@ -208,17 +208,17 @@ class Player:
             if direction == "RIGHT" and self.rect.x < 1240:
                 self.move_x = 5
                 self.move_y = 0
-                self.playing_sequence = True
+                
             elif direction == "LEFT" and self.rect.x > 0:
                 self.move_x = -5
                 self.move_y = 0
-                self.playing_sequence = True
+                
             # print("RUNNING")
 
 
     def shoot_sequence(self):
-        if self.jumping == False and self.sliding == False and self.ducking == False and self.running == False and self.run_shooting  == False and self.ladder_action == False:
-            self.shooting = True
+        if not self.is_jump:
+        
             if self.animation != self.shoot and self.animation != self.shoot_left:
                 self.frame = 0
                 if self.flipped == True:
@@ -227,13 +227,13 @@ class Player:
                     self.animation = self.shoot
             self.move_x = 0
             self.move_y = 0
-            self.playing_sequence = True
+            
             # print("SHOOTING")
            
 
     def run_shoot_sequence(self, direction):
-        if self.jumping == False and self.sliding == False and self.ducking == False and self.running == True and self.shooting == False and self.ladder_action  == False:
-            self.run_shooting  = True
+        if not self.is_jump:
+        
             if self.animation != self.run_shoot and self.animation != self.run_shoot_left:
                 self.frame = 0
                 if self.flipped == True:
@@ -243,22 +243,20 @@ class Player:
             if direction == "RIGHT" and self.rect.x < 1240:
                 self.move_x = 1
                 self.move_y = 0
-                self.playing_sequence = True
+                
             elif direction == "LEFT" and self.rect.x > 0:
                 self.move_x = -1
                 self.move_y = 0
-                self.playing_sequence = True
+                
             # print("RUN SHOOTING")
 
     # def jump_movement(self):
 
 
 
-    def jump_sequence(self, direction):
-        if self.sliding == False and self.ducking == False and self.running == False and self.ladder_action == False and self.shooting == False and self.run_shooting  == False :
-            self.jumping = True
-            
-
+    def jump_sequence(self, direction, plataform_list):
+        if self.is_on_plataform(plataform_list):
+        
             if self.animation != self.jump and self.animation != self.jump_left:
                 self.frame = 0
                 if self.flipped:
@@ -272,19 +270,19 @@ class Player:
                     if self.flag_repeat:
                         self.move_x = int(5 / 2)
                         self.move_y = -self.jump_power
-                        self.playing_sequence = True
+                        
 
                 elif direction == "LEFT":
                     if self.flag_repeat:
                         self.move_x = int(-5 / 2)
                         self.move_y = -self.jump_power
-                        self.playing_sequence = True
+                        
 
                 elif direction == "MIDDLE":
                     if self.flag_repeat:
                         self.move_x = 0
                         self.move_y = -self.jump_power
-                        self.playing_sequence = True
+                        
             
 
             if not self.flag_jump:
@@ -296,8 +294,8 @@ class Player:
 
 
     def slide_sequence(self, direction):
-        if self.jumping == False and self.ducking == False and self.running == False and self.ladder_action == False and self.shooting == False and self.run_shooting  == False:
-            self.sliding = True
+        if not self.is_jump:
+        
             if self.animation != self.slide and self.animation != self.slide_left:
                 self.frame = 0
                 if self.flipped == True:
@@ -308,17 +306,17 @@ class Player:
             if direction == "RIGHT" and self.rect.x < 1240:
                 self.move_x = 3
                 self.move_y = 0
-                self.playing_sequence = True
+                
             elif direction == "LEFT" and self.rect.x > 0:
                 self.move_x = -3
                 self.move_y = 0
-                self.playing_sequence = True
+                
             # print("SLINDING")
 
 
     def duck_sequence(self):
-        if self.jumping == False and self.sliding == False and self.running == False and self.ladder_action == False and self.shooting == False and self.run_shooting  == False:
-            self.ducking = True
+        if not self.is_jump:
+        
             if self.animation != self.duck and self.animation != self.duck_left:
                 self.frame = 0
                 if self.flipped == True:
@@ -327,23 +325,23 @@ class Player:
                     self.animation = self.duck
             self.move_x = 0
             self.move_y = 0
-            self.playing_sequence = True
+            
             # print("DUCK")
 
 
     def ladder_sequence(self):
-        if self.jumping == False and self.sliding == False and self.running == False and self.ducking == False and self.shooting == False and self.run_shooting  == False:
-            self.ladder_action = True
+        if not self.is_jump:
+        
             if self.animation != self.ladder:
                 self.frame = 0
                 self.animation = self.ladder
             if self.rect.y > 0:
                 self.move_x = 0
                 self.move_y = -10
-                self.playing_sequence = True
+                
             # print("LADDER")
 
-    def events(self, keys):
+    def events(self, keys, plataform_list):
         self.jumping = False
         self.sliding = False
         self.ducking = False
@@ -368,13 +366,13 @@ class Player:
             self.shoot_sequence()
 
         if keys[K_LEFT] and keys[K_SPACE]: # Salto izquierda
-            self.jump_sequence("LEFT")
+            self.jump_sequence("LEFT", plataform_list)
 
         if keys[K_RIGHT] and keys[K_SPACE]: # Salto derecha
-            self.jump_sequence("RIGHT")
+            self.jump_sequence("RIGHT", plataform_list)
 
         if keys[K_SPACE] and not keys[K_DOWN] and not keys[K_RIGHT] and not keys[K_LEFT]: # Salto 
-            self.jump_sequence( "MIDDLE")
+            self.jump_sequence( "MIDDLE", plataform_list)
 
         if keys[K_DOWN] and keys[K_RIGHT] and not keys[K_UP] and not keys[K_LEFT]: # Deslizarce derecha
             self.slide_sequence("RIGHT")
@@ -390,7 +388,7 @@ class Player:
             
         if keys[K_w]: # Vueltita loca
             self.animation = self.spin
-            self.playing_sequence = True
+            
 
         if not keys[K_UP] and not keys[K_LEFT] and not keys[K_RIGHT] and not keys[K_SPACE] and not keys[K_DOWN] and not keys[K_x] and not keys[K_w]: # Estatico
             self.idle_action()
