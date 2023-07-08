@@ -43,8 +43,7 @@ def escalar_secuencia_imagenes(secuencia, escala):
         secuencia_escalada.append(imagen_escalada)
     return secuencia_escalada
 
-w=100
-h=200
+
 # print(escalar_secuencia_imagenes(crear_lista_rutas_relativas("sprites/spin/"), (w, h)))
 #===============================================================================
 
