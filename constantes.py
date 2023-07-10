@@ -8,8 +8,12 @@ GROUND_LEVEL = 650
 # platforms.py
 GROUND_COLLIDE_H = 5 # Aprox Gravedad/2 + 1
 SIDE_COLLIDE_W = 10
-DEBUG = False
+DEBUG = True
 
 
 # Prueba nivel
 LEVEL_ONE = True
+
+
+COOLDOWN_DISPARO = 500 
+COOLDOWN_JUMP = 300
