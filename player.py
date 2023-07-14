@@ -5,7 +5,7 @@ from auxiliar import *
 from constantes import *
 import math
 from bullet import Bullet
-
+from bullet_boss import BulletBoss
 
 
 class Player:
@@ -197,12 +197,12 @@ class Player:
             #     break
         return retorno
 
-    def update(self,delta_ms, keys, plataform_list, enemies_list):
+    def update(self,delta_ms, keys, plataform_list, enemies_list, bullet_boss=None):
         self.events(keys, plataform_list, delta_ms)
         self.do_animations(delta_ms)
         self.do_movement(delta_ms, plataform_list)
         self.touch_plataform(plataform_list)
-        self.receive_attack(enemies_list)
+        self.receive_attack(enemies_list, bullet_boss)
 
     #Cambiar x ó y
     def change_x(self,delta_x):
@@ -274,7 +274,6 @@ class Player:
                 self.animation = self.shoot_left
                 self.flag_shoot_left = True
                 if self.frame == 2:
-                    
                     bullet = Bullet(x_init=self.rect.x - 25, y_init=self.rect.y + 5, speed=10, frame_rate_ms=100, move_rate_ms=75, direction="LEFT", width=10, height=10)
                     self.bullet_list.append(bullet)
 
@@ -313,10 +312,15 @@ class Player:
 
     # def jump_movement(self):
 
-    def receive_attack(self, enemies_list):
+    def receive_attack(self, enemies_list, bullet_boss):
         for enemy in enemies_list:
             if self.collition_rect.colliderect(enemy.collition_rect):
                 self.flag_impact = True
+        if bullet_boss != None:
+            for bullet in bullet_boss:
+                if self.collition_rect.colliderect(bullet.collition_rect):
+                    self.flag_impact = True
+
         if self.flag_impact:
             if self.animation != self.hurt or self.animation != self.hurt_left:
                 self.frame = 0

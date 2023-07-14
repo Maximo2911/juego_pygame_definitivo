@@ -7,6 +7,7 @@ from auxiliar import *
 from background import *
 from platforms import *
 from money import *
+from boss import Boss
 
 
 # configuracion inicial de pygame
@@ -22,40 +23,46 @@ contador_money = 0
 jugador = Player(250, 600, frame_rate_ms = 250, gravity = 5.5, jump_power = 12.5, jump_height = 150)             #En frame_rate_ms = 1000 se rompe pero imagen bien
 
 static_background_back = Background(x=0,y=0,width=ANCHO_PANTALLA,height=ALTO_PANTALLA,path="backgrounds/back.png")
-static_background_far = Background(x=0,y=0,width=ANCHO_PANTALLA,height=ALTO_PANTALLA,path="backgrounds/far.png")
-static_background_middle = Background(x=0,y=0,width=ANCHO_PANTALLA,height=ALTO_PANTALLA,path="backgrounds/middle.png")
 
 plataform_list = []
-plataform_list.append(Plataform(x=550,y=600,width=50,height=50,type=5))
-plataform_list.append(Plataform(x=450,y=500,width=50,height=25,type=1))
+plataform_list.append(Plataform(x=550,y=550,width=50,height=50,type=5))
+plataform_list.append(Plataform(x=450,y=500,width=50,height=50,type=5))
+plataform_list.append(Plataform(x=400,y=500,width=50,height=50,type=5))
+plataform_list.append(Plataform(x=100,y=100,width=50,height=50,type=5))
+plataform_list.append(Plataform(x=150,y=100,width=50,height=50,type=5))
+plataform_list.append(Plataform(x=150,y=200,width=50,height=50,type=10))
+plataform_list.append(Plataform(x=100,y=150,width=50,height=50,type=9))
+
 
 money_list = []
-money_list.append(Money(800, 550, 100))
+money_list.append(Money(200, 80, 100))
 money_list.append(Money(850, 550, 100))
 money_list.append(Money(825, 550, 100))
 
+# boss = Boss(900, 380, 5, 2, 25, 250)
 
 enemy_list = []
-enemy_list.append(Enemy(x=150,y=600,path="enemies/skeleton/{0}.png",from_index=0,quantity=8,p_scale=1.7,speed_move=5, frame_move=50,frame_rate_ms=100, gravity=5.5, x_init=100, x_end=300))
+# enemy_list.append(Enemy(x=150,y=600,path="enemies/skeleton/{0}.png",from_index=0,quantity=8,p_scale=1.7,speed_move=5, frame_move=50,frame_rate_ms=100, gravity=5.5, x_init=100, x_end=300))
 enemy_list.append(Enemy(x=150,y=300,path="enemies/bat/{0}.png",from_index=0,quantity=5,p_scale=1.7,speed_move=5, frame_move=50,frame_rate_ms=100, gravity=None, x_init=250, x_end=500))
 
 # enemy_list.append(Enemy(x=900,y=400,speed_walk=6,speed_run=5,gravity=14,jump_power=30,frame_rate_ms=150,move_rate_ms=50,jump_height=140,p_scale=0.08,interval_time_jump=300))
 
-plataform_list.append(Plataform(x=0,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=100,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=200,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=300,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=400,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=500,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=600,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=700,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=800,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=900,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=1000,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=1100,y=650,width=100,height=50,type=8))
-plataform_list.append(Plataform(x=1200,y=650,width=100,height=50,type=8))
+plataform_list.append(Plataform(x=0,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=100,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=200,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=300,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=400,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=500,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=600,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=700,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=800,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=900,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=1000,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=1100,y=650,width=100,height=150,type=8))
+plataform_list.append(Plataform(x=1200,y=650,width=100,height=150,type=8))
 
 bullets_list = jugador.bullet_list
+# bullets_boss = boss.bullet_boss_list
 # Clase bullet
 # bullet = Bullet(int(jugador.collition_rect.x)+5, int(jugador.collition_rect.y)+5, ANCHO_PANTALLA, 5, 500, 5, 5, 5)
 # print(bullet.frame_rate_ms)
@@ -83,7 +90,7 @@ while corriendo_juego:
             enemy_list.remove(enemy)
         enemy.update(delta_ms, plataform_list, bullets_list)
         enemy.draw(pantalla_juego)
-        print(enemy.rect)
+        # print(enemy.rect)
 
     
     for money in money_list:
@@ -95,6 +102,12 @@ while corriendo_juego:
     if len(money_list) == 0:
         print("HAS GANADO")
 
+    # for bullets in bullets_boss:
+    #     if not bullets.is_active:
+    #         bullets_boss.remove(bullets)
+    #     bullets.update(delta_ms, plataform_list, jugador, boss)
+    #     bullets.draw(pantalla_juego)
+
     for bullet in bullets_list:
     # print(bullet.rect.x)
         if not bullet.is_active:
@@ -104,6 +117,11 @@ while corriendo_juego:
         bullet.draw(pantalla_juego)
         # print(f"{bullet.tiempo_transcurrido_animation} >= {bullet.frame_rate_ms}")
         # print(f"-----------------{bullet.is_active}")
+
+    # boss.update(delta_ms, jugador, bullets_list)
+    # boss.draw(pantalla_juego)
+
+    
 
     keys = pygame.key.get_pressed()
     jugador.update(delta_ms, keys, plataform_list, enemy_list)
