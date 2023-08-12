@@ -76,33 +76,34 @@ class FormGameLevel3(Form):
     def on_click_boton1(self, parametro):
         self.set_active(parametro)
 
-    def update(self, lista_eventos,keys,delta_ms):
+    def update(self, lista_eventos,keys,delta_ms, musica):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
 
         for enemy in self.enemy_list:
             if enemy.flag_impact:
                 self.enemy_list.remove(enemy)
-            enemy.update(delta_ms, self.plataform_list, self.bullets_list)
+            enemy.update(delta_ms, self.plataform_list, self.bullets_list, musica)
 
         for money in self.money_list:
             if money.flag_collition:
                 self.money_list.remove(money)
-            money.update(delta_ms, self.jugador)
+            money.update(delta_ms, self.jugador, musica)
         if len(self.money_list) == 0:
             print("HAS GANADO")
+            musica.victoria.play()
         
-        self.jugador.update(delta_ms, keys, self.plataform_list, self.enemy_list)
+        self.jugador.update(delta_ms, keys, self.plataform_list, self.enemy_list, musica, self.bullets_boss)
         for bullet in self.bullets_list:
             if not bullet.is_active:
                 self.bullets_list.remove(bullet)
-            bullet.update(delta_ms,self.plataform_list, self.enemy_list, self.jugador, self.boss)
+            bullet.update(delta_ms,self.plataform_list, self.enemy_list, self.jugador, musica, self.boss)
 
         for bullets in self.bullets_boss:
             if not bullets.is_active:
                 self.bullets_boss.remove(bullets)
-            bullets.update(delta_ms, self.plataform_list, self.jugador, self.boss)
-        self.boss.update(delta_ms,self.jugador, self.bullets_list)
+            bullets.update(delta_ms, self.plataform_list, self.jugador, self.boss, musica)
+        self.boss.update(delta_ms,self.jugador, self.bullets_list, musica)
 
     def draw(self, master_surface): 
         super().draw()

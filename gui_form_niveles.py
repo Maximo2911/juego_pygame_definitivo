@@ -28,9 +28,10 @@ class FormNiveles(Form):
         for aux_widget in self.lista_widget:
             aux_widget.update(lista_eventos)
         for evento in lista_eventos:
-             if evento.type == pygame.KEYDOWN:
+            if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE:
                     self.set_active("pausa")
+                    print("PAUSEEEEEEEEEE")
 
     def on_click_boton_nivel(self,parametro):
         """

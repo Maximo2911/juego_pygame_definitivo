@@ -53,7 +53,7 @@ class BulletBoss():
 
     def do_movement(self,delta_ms,plataform_list, player, boss):
         self.angle = math.atan2(player.rect.y - boss.rect.y, player.rect.x - boss.rect.x) #Obtengo el angulo en radianes
-        print('El angulo engrados es:', int(self.angle*180/math.pi))
+        # print('El angulo engrados es:', int(self.angle*180/math.pi)) #! print grados
 
         self.move_x = math.cos(self.angle)*self.speed
         self.move_y = math.sin(self.angle)*self.speed
@@ -74,7 +74,7 @@ class BulletBoss():
                 self.frame = 0
             
     
-    def check_impact(self,plataform_list, player):
+    def check_impact(self,plataform_list, player, music):
         # if(self.is_active and self.rect.colliderect(player.rect)):
         #     print("IMPACTO PLAYER")
         #     player.receive_shoot()
@@ -82,6 +82,7 @@ class BulletBoss():
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA: 
             if(self.is_active and self.collition_rect.colliderect(player.collition_rect)):
                 print("IMPACTO BOSS")
+                music.hit.play()
                 self.is_active = False
             for plataform in plataform_list:
                 if(self.is_active and self.collition_rect.colliderect(plataform.collition_rect)):
@@ -91,10 +92,10 @@ class BulletBoss():
             self.is_active = False
                 
 
-    def update(self,delta_ms,plataform_list, player, boss):
+    def update(self,delta_ms,plataform_list, player, boss, music):
         self.do_movement(delta_ms,plataform_list, player, boss)
         self.do_animation(delta_ms) 
-        self.check_impact(plataform_list, player)
+        self.check_impact(plataform_list, player, music)
 
     def draw(self,screen):
         if self.is_active:

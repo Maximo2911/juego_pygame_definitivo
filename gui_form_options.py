@@ -73,7 +73,6 @@ class FormOpciones(Form):
     def update(self, lista_eventos,sonidos):
         """
         Este metodo se encarga de actualizar y controlar el sonido y los distintos widget
-
         Parametros: recibe una lista de eventos y sonidos
         """
         self.buton_box.on_click_param = self.box._text

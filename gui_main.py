@@ -24,6 +24,7 @@ musica = Musica()
 musica.play_musica()
 # juego = FordManager(PANTALLA)
 
+
 timer_1s = pygame.USEREVENT + 0
 pygame.time.set_timer(timer_1s,1000)
 main_menu = FormMenu("menu", screen, x=0, y=0, w=ANCHO_PANTALLA, h=ALTO_PANTALLA, color_background=BLACK, imagen_background=r"buttoms\window\0.png", color_border=BLACK, active=True)
@@ -34,8 +35,7 @@ form_game_L1 = FormGameLevel1(name="nivel_1",master_surface = screen,x=0,y=0,w=A
 form_game_L2 = FormGameLevel2(name="nivel_2",master_surface = screen,x=0,y=0,w=ANCHO_PANTALLA,h=ALTO_PANTALLA,color_background=None,color_border=None,active=False)
 form_game_L3 = FormGameLevel3(name="nivel_3",master_surface = screen,x=0,y=0,w=ANCHO_PANTALLA,h=ALTO_PANTALLA,color_background=None,color_border=None,active=False)
 
-
-form_pausa = FormPausa("pausa", master_surface= screen, x= 200, y= 200, w=500, h=450, color_background=None, imagen_background=r"buttoms\window\0.png", color_border=None, active=False)
+form_pausa = FormPausa(name="pausa", master_surface= screen, x= 320, y= 125, w=600, h=450, color_background=None, imagen_background=r"buttoms\window\0.png", color_border=None, active=False)
 while True:     
     events = pygame.event.get()
     for event in events:
@@ -44,7 +44,6 @@ while True:
             sys.exit()
     
     keys = pygame.key.get_pressed()
-
     delta_ms = clock.tick(FPS)
     # print(form_pausa.active)
     if(main_menu.active):
@@ -60,25 +59,36 @@ while True:
         form_niveles.update(events)
         form_niveles.draw()
 
-    elif(form_niveles.active):
-        form_niveles.update(events)
-        form_niveles.draw()
+    # elif(form_niveles.active):
+    #     form_niveles.update(events)
+    #     form_niveles.draw()
 
     elif(form_game_L1.active):
-        form_game_L1.update(events, keys, delta_ms)
+        form_game_L1.update(events, keys, delta_ms, musica)
         form_game_L1.draw(screen)
+        # print(form_pausa.active)
+        if(form_pausa.active):
+            print("ENTRÓ")
+            form_pausa.update(events)
+            form_pausa.draw()
 
     elif(form_game_L2.active):
-        form_game_L2.update(events, keys, delta_ms)
+        form_game_L2.update(events, keys, delta_ms, musica)
         form_game_L2.draw(screen)
+        if(form_pausa.active):
+            form_pausa.update(events)
+            form_pausa.draw()
     
     elif(form_game_L3.active):
-        form_game_L3.update(events, keys, delta_ms)
+        form_game_L3.update(events, keys, delta_ms, musica)
         form_game_L3.draw(screen)
+        if(form_pausa.active):
+            form_pausa.update(events)
+            form_pausa.draw()
 
-    elif(form_pausa.active):
-        form_pausa.update(events)
-        form_pausa.draw(screen)
+    # elif(form_pausa.active):
+    #     form_pausa.update(events)
+    #     form_pausa.draw()
 
     pygame.display.update()
 

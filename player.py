@@ -33,8 +33,6 @@ class Player:
         self.spin_left = Auxiliar.getSurfaceFromSeparateFiles("sprites/spin/{0}.png",0,8,flip=True,scale=1.5)
 
 
-        
-
         #animacion
         self.animation = self.idle
         self.frame = 0
@@ -197,12 +195,12 @@ class Player:
             #     break
         return retorno
 
-    def update(self,delta_ms, keys, plataform_list, enemies_list, bullet_boss=None):
-        self.events(keys, plataform_list, delta_ms)
+    def update(self,delta_ms, keys, plataform_list, enemies_list, music, bullet_boss=None):
+        self.events(keys, plataform_list, delta_ms, music)
         self.do_animations(delta_ms)
         self.do_movement(delta_ms, plataform_list)
         self.touch_plataform(plataform_list)
-        self.receive_attack(enemies_list, bullet_boss)
+        self.receive_attack(enemies_list, bullet_boss, music)
 
     #Cambiar x ó y
     def change_x(self,delta_x):
@@ -266,7 +264,7 @@ class Player:
                 
             # print("RUNNING")
 
-    def shoot_sequence(self):
+    def shoot_sequence(self, musica):
         if not self.is_jump and not self.flag_impact:
             if self.animation != self.shoot and self.animation != self.shoot_left:
                 self.frame = 0
@@ -276,6 +274,8 @@ class Player:
                 if self.frame == 2:
                     bullet = Bullet(x_init=self.rect.x - 25, y_init=self.rect.y + 5, speed=10, frame_rate_ms=100, move_rate_ms=75, direction="LEFT", width=10, height=10)
                     self.bullet_list.append(bullet)
+                    musica.disparo.play()
+                    
 
             else:
                 self.animation = self.shoot
@@ -284,6 +284,8 @@ class Player:
                     # self.is_shoot = True
                     bullet = Bullet(x_init=self.rect.x + 25, y_init=self.rect.y + 5, speed=10, frame_rate_ms=100, move_rate_ms=75, direction="RIGHT", width=10, height=10)
                     self.bullet_list.append(bullet)
+                    musica.disparo.play()
+
             # self.is_shoot = True
             # if((self.time_events - self.tiempo_last_shot) > COOLDOWN_DISPARO):
             # self.is_shoot = False
@@ -312,14 +314,17 @@ class Player:
 
     # def jump_movement(self):
 
-    def receive_attack(self, enemies_list, bullet_boss):
+    def receive_attack(self, enemies_list, bullet_boss, musica):
         for enemy in enemies_list:
             if self.collition_rect.colliderect(enemy.collition_rect):
                 self.flag_impact = True
+                musica.hit.play()
         if bullet_boss != None:
             for bullet in bullet_boss:
                 if self.collition_rect.colliderect(bullet.collition_rect):
                     self.flag_impact = True
+                    musica.hit.play()
+                    print("He sido atacado")
 
         if self.flag_impact:
             if self.animation != self.hurt or self.animation != self.hurt_left:
@@ -411,7 +416,7 @@ class Player:
                 
             # print("LADDER")
 
-    def events(self, keys, plataform_list, delta_ms):
+    def events(self, keys, plataform_list, delta_ms, music):
         
             self.time_events += delta_ms
 
@@ -438,7 +443,7 @@ class Player:
             if keys[K_x] and not keys[K_SPACE] and not keys[K_RIGHT] and not keys[K_LEFT]: # Disparo
                 # self.shoot_sequence()
                 if((self.time_events - self.tiempo_last_shot) > COOLDOWN_DISPARO):
-                    self.shoot_sequence() 
+                    self.shoot_sequence(music) 
                     self.tiempo_last_shot = self.time_events
 
             if keys[K_LEFT] and keys[K_SPACE]: # Salto izquierda

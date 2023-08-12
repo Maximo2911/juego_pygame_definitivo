@@ -132,11 +132,12 @@ class Enemy():
         return retorno          
 
 
-    def recieve_shoot(self, bullet_list):
+    def recieve_shoot(self, bullet_list, musica):
         for bullet in bullet_list:
             if bullet.collition_rect.colliderect(self.collition_rect):
             # if bullet.rect.x == self.rect.x:
                 self.flag_one_more = True
+                musica.muerte.play()
 
                 # self.flag_impact = True
             
@@ -169,10 +170,10 @@ class Enemy():
                 else: 
                     self.frame = 0
 
-    def update(self,delta_ms,plataform_list, bullet_list):
+    def update(self,delta_ms,plataform_list, bullet_list, musica):
         self.do_movement(delta_ms,plataform_list)
         self.do_animation(delta_ms) 
-        self.recieve_shoot(bullet_list)
+        self.recieve_shoot(bullet_list, musica)
 
     def draw(self,screen):
         if not self.flag_impact:

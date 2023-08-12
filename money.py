@@ -31,14 +31,16 @@ class Money():
                 self.frame = 0
 
 
-    def check_impact(self, player):
+    def check_impact(self, player, musica):
         if self.collition_rect.colliderect(player.collition_rect):
             self.flag_collition = True
+            musica.recolectar.play()
+
             
 
-    def update(self,delta_ms, player):
+    def update(self,delta_ms, player, musica):
         self.do_animations(delta_ms)
-        self.check_impact(player)
+        self.check_impact(player, musica)
 
 
     def draw(self, screen):

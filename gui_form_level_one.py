@@ -11,6 +11,7 @@ from platforms import Plataform
 from background import Background
 from money import Money
 from bullet import Bullet
+from gui_widget import Widget
 
 class FormGameLevel1(Form):
     def __init__(self,name,master_surface,x,y,w,h,color_background,color_border,active):
@@ -74,32 +75,52 @@ class FormGameLevel1(Form):
         self.plataform_list.append(Plataform(x=1200,y=650,width=100,height=150,type=8))
 
         self.bullets_list = self.jugador.bullet_list
+        
+        # _____________________________________________________________________________________________________________________________________________________________________________
+        self.text1 = Widget(master=self,x=400,y=150,w=100,h=50,color_background=None,color_border=None,image_background=None,text="PAUSA",font="consola",font_size=30,font_color=WHITE)
+        self.boton1 = Button(master=self,x=450,y=210,w=70,h=70,color_background=None,color_border=None,image_background=r"buttoms\mini_continue\0.png",on_click=self.on_click_boton1,on_click_param="salir",text=None,font=None,font_size=None,font_color=None)
+        # self.boton2 = Button(master=self,x=180,y=130,w=70,h=70,color_background=None,color_border=None,image_background=RUTA_IMAGEN + r"Menu\Button\Settings_BTN.png",on_click=self.on_click_boton1,on_click_param="pausa",text=None,font=None,font_size=None,font_color=None)
+        self.boton2 = Button(master=self,x=550,y=210,w=70,h=70,color_background=None,color_border=None,image_background=r"buttoms\mini_quit\0.png",on_click=self.on_click_boton1,on_click_param="menu",text=None,font=None,font_size=None,font_color=None)
+        self.boton3 = Button(master=self,x=680,y=210,w=70,h=70,color_background=None,color_border=None,image_background=r"buttoms\mini_house\0.png",on_click=self.on_click_boton1,on_click_param="niveles",text=None)
+        
+        # self.boton3 = Button(master=self,x=ANCHO_PANTALLA//2-100,y=380,w=200,h=50,color_background=None,color_border=None,image_background=r"buttoms\quit\0.png",on_click=self.on_click_boton2,on_click_param="salir",text="",font="IMPACT",font_size=30,font_color=WHITE)
+
+        self.lista_widget = [self.text1,self.boton1,self.boton2,self.boton3]
+        # _____________________________________________________________________________________________________________________________________________________________________________
+
 
     def on_click_boton1(self, parametro):
         self.set_active(parametro)
 
-    def update(self, lista_eventos,keys,delta_ms):
+    def update(self, lista_eventos,keys,delta_ms, musica):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
-
         for enemy in self.enemy_list:
             if enemy.flag_impact:
                 self.enemy_list.remove(enemy)
-            enemy.update(delta_ms, self.plataform_list, self.bullets_list)
+            enemy.update(delta_ms, self.plataform_list, self.bullets_list, musica) #! ver musica
 
         for money in self.money_list:
             if money.flag_collition:
                 self.money_list.remove(money)
-            money.update(delta_ms, self.jugador)
+            money.update(delta_ms, self.jugador, musica) #! ver musica
         if len(self.money_list) == 0:
             print("HAS GANADO")
+            musica.victoria.play()
         
-        self.jugador.update(delta_ms, keys, self.plataform_list, self.enemy_list)
+        self.jugador.update(delta_ms, keys, self.plataform_list, self.enemy_list, musica) #! ver musica
 
         for bullet in self.bullets_list:
             if not bullet.is_active:
                 self.bullets_list.remove(bullet)
-            bullet.update(delta_ms,self.plataform_list, self.enemy_list, self.jugador)
+            bullet.update(delta_ms,self.plataform_list, self.enemy_list, self.jugador, musica) #! ver musica
+
+
+        for evento in lista_eventos:
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_p:
+                    self.set_active("pausa")
+                    print("PAUSEEEEEEEEEE")
 
     def draw(self, master_surface): 
         super().draw()

@@ -41,28 +41,32 @@ class Boss():
         self.is_shooting = False
         
 
-    def shooting(self, delta_ms, player):
-        
+    def shooting(self, delta_ms, player, music):
         self.tiempo_transcurrido_shoot += delta_ms
         if(self.tiempo_transcurrido_shoot >= 2000):
             self.tiempo_transcurrido_shoot = 0
             self.animation = self.shoot
         if self.frame == 3 and self.animation == self.shoot:                                
-            print("SHOOTING")
+            # print("SHOOTING")
             # self.is_shooting = True
 
             if self.flag_ready == True:
                 bullet_boss = BulletBoss(x_init=self.rect.x, x_end=player.rect.x, y_init=self.rect.y + 35, y_end=self.rect.y, speed=5, frame_rate_ms=100, move_rate_ms=75, width=10, height=10)
                 self.bullet_boss_list.append(bullet_boss)
+                music.disparo_boss.play()
                 self.flag_ready = False
+                # print(bullet_boss)
 
-    def recieve_shoot(self, bullet_list):
+    def recieve_shoot(self, bullet_list, music):
         for bullet in bullet_list:
             if bullet.collition_rect.colliderect(self.collition_rect):
             # if bullet.rect.x == self.rect.x:
                 self.lives -= 1
+                music.hit.play()
                 if self.lives == 0:
                     self.flag_one_more = True
+                    music.muerte_enemigo.play()
+
 
     def do_animation(self,delta_ms):
         # if self.is_shooting:
@@ -92,11 +96,11 @@ class Boss():
                     self.animation = self.idle
                     self.is_shooting = False
 
-    def update(self,delta_ms,player, bullet_list):
+    def update(self,delta_ms,player, bullet_list, music):
         # self.do_movement(delta_ms,plataform_list)
         self.do_animation(delta_ms) 
-        self.recieve_shoot(bullet_list)
-        self.shooting(delta_ms, player)
+        self.recieve_shoot(bullet_list, music)
+        self.shooting(delta_ms, player, music)
 
     def draw(self,screen):
         if not self.flag_impact:

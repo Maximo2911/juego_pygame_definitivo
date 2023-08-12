@@ -80,7 +80,7 @@ class Bullet():
             else:
                 self.frame = 0
             
-    def check_impact(self,plataform_list,enemy_list, boss):
+    def check_impact(self,plataform_list,enemy_list, boss, music):
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA: 
             for aux_enemy in enemy_list:
                 # if self.collition_rect.colliderect(bullet.collition_rect)
@@ -98,10 +98,10 @@ class Bullet():
         else:
             self.is_active = False
                 
-    def update(self,delta_ms,plataform_list,enemy_list, player, boss=None):
+    def update(self,delta_ms,plataform_list,enemy_list, player, music,boss=None):
         self.do_movement(delta_ms,plataform_list,enemy_list, player)
         self.do_animation(delta_ms) 
-        self.check_impact(plataform_list, enemy_list, boss)
+        self.check_impact(plataform_list, enemy_list, boss, music) #!
 
     def draw(self,screen):
         if self.is_active:
